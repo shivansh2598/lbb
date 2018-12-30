@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        var lat=[];
+        var long=[];
+        var namez=[];
+        var address1=[];
+        var phone_no=[];
+        var recomendations=[];
+        var final_arr=[];
+        var res;
+        axios.get('https://apisearch.lbb.in/v1/partner/places/?aroundLatLng=28.6289332%2C77.2065322&aroundRadius=136263&count=30&facetFilters=%5B%5B%22tags%3Astreet-food%22%5D%5D',{
+            headers:
+        {
+            'x-api-key': 'NB6nJs2hRD1FznEhO0lS6bDaJ6RvoGR6KksYU9N5',
+        }
+    
+    }).then(function (response) {   //here response is the object that has json 
+    
+        var n=response.data.hitsPerPage;
+          for(let i=0;i<n;i++)
+          {
+              lat[i]=response.data.hits[i]._geoloc.lat;
+              long[i]=response.data.hits[i]._geoloc.lng;
+              namez[i]=response.data.hits[i].name;
+              address1[i]=response.data.hits[i].location.address;
+              phone_no[i]=response.data.hits[i].contact.contactNumber;
+              recomendations[i]=response.data.hits[i].recommendationsCount;
+              final_arr[i]=`<li>address : ${address1[i]}</li> <li>  phone no : ${phone_no[i]} </li> <li>recomended by : ${recomendations[i]} people </li>`;
+          }
+          console.log(final_arr);
+          window.localStorage.setItem('lat',JSON.stringify(lat));
+          window.localStorage.setItem('long', JSON.stringify(long));
+          window.localStorage.setItem('name1',JSON.stringify(namez));
+          window.localStorage.setItem('size',JSON.stringify(n));
+          window.localStorage.setItem('details',JSON.stringify(final_arr));
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        
+    </script>
+</body>
+</html>
